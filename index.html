@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ME210 Winter 2025: Bots & Pans - Software Strategy Report</title>
+  <title>ME210 Winter 2025: Bots & Pans - Lab Report</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <header>
-    <h1>ME210 Winter 2025: Bots & Pans - Software Strategy Report</h1>
+    <h1>ME210 Winter 2025: Bots & Pans - Lab Report</h1>
     <nav>
       <ul>
         <li><a href="#introduction">Introduction</a></li>
@@ -176,27 +176,6 @@
         </p>
       </article>
       
-      <!-- Software Design Rationale -->
-      <article id="design-rationale">
-        <h3>Software Design Rationale</h3>
-        <h4>Why a Master-Slave Architecture?</h4>
-        <p>
-          This architecture distributes resources, isolates faults, simplifies development, and creates modular code.
-        </p>
-        <h4>Why a State Machine?</h4>
-        <p>
-          A state machine offers a clear operational flow, easier debugging, compartmentalized logic, and resilience through error recovery.
-        </p>
-        <h4>Why a Custom Communication Protocol?</h4>
-        <p>
-          The protocol provides reliability, error detection via checksum verification, flexibility in message types, and clear message structure.
-        </p>
-        <h4>Brute Force vs. Sensor-Based Approaches</h4>
-        <p>
-          Although sensor-based methods were implemented, a predetermined movement sequence (PUSH_POT) proved more reliable under competition conditions.
-        </p>
-      </article>
-      
       <!-- Conclusion -->
       <article id="conclusion">
         <h3>Conclusion</h3>
@@ -216,56 +195,77 @@
     <section id="hardware">
       <h2>Hardware Architecture Overview</h2>
       
+      <!-- Overview -->
+      <article id="hardware-overview">
+        <p>
+          Our design initially implemented 9 sensors, 6 DC motors, 3 Motor Drivers, and a speaker/amplifier circuit.
+        </p>
+      </article>
+      
       <!-- Sensors -->
-      <article id="sensors">
+      <article id="hardware-sensors">
         <h3>Sensors</h3>
         <h4>IMU (Inertial Measurement Unit)</h4>
         <p>
-          The IMU was planned to be used for initial orientation using accelerometer and gyroscope data, but was ultimately not used due to accuracy issues.
+          We planned to use the accelerometer and gyroscope on this device to get an initial orientation of the robot so that it could correct its movements based on its known position.
+          Ultimately, the IMU was too inaccurate to be used and we could not fix it in software, so we decided not to use this sensor.
         </p>
-        <h4>Ultrasonic Sensors</h4>
+        <img src="images/hardware-imu.jpg" alt="IMU Sensor" />
+        
+        <h4>Ultrasonic Sensor</h4>
         <p>
-          Positioned low on the robot, these sensors were used for wall detection, orientation, and navigation.
+          These sensors were placed low on the robot to sense the distances between the robot and the walls for initial orientation.
+          They were also planned for later use during the round to help find the pantry and avoid collisions.
         </p>
-        <h4>IR Sensors</h4>
+        <img src="images/hardware-ultrasonic.jpg" alt="Ultrasonic Sensors" />
+        
+        <h4>IR Sensor</h4>
         <p>
-          Four IR sensors were implemented (with an increased gain via a resistor swap) to cover a larger area and detect the IR emitter more reliably.
+          We implemented four IR sensors (from lab 1) for redundancy and a larger coverage area.
+          The IR phototransistors have a 10-degree signal acceptance angle, so placing four sensors allowed better detection of the IR emitter.
+          An alteration from the lab 1 circuit—increasing the gain by swapping for a larger resistor—improved the sensitivity and increased the sensing distance.
         </p>
-        <img src="images/sensors-hardware.jpg" alt="Hardware Sensors" />
+        <img src="images/hardware-ir.jpg" alt="IR Sensors" />
       </article>
       
       <!-- Motors & Motor Drivers -->
-      <article id="motors">
+      <article id="hardware-motors">
         <h3>Motors & Motor Drivers</h3>
         <p>
-          We used DC motors and Motor Drivers from lab 2 due to their availability, ease of use, low cost, and suitable speed/torque characteristics.
-          The trade-off was the inability to track wheel rotations, so sensor-based position tracking was employed.
+          We chose to use the DC motors and Motor Drivers from lab 2 due to their availability, our familiarity with them, low cost, and suitable speed/torque specifications.
+          Although DC motors make it more challenging to track the robot’s position due to the inability to count wheel rotations, we opted to use sensor-based positioning instead.
         </p>
+        <img src="images/hardware-motors.jpg" alt="Motors and Motor Drivers" />
       </article>
       
-      <!-- Speaker and Amplifier -->
-      <article id="speaker">
+      <!-- Speaker and Amplifier Circuit -->
+      <article id="hardware-speaker">
         <h3>Speaker and Amplifier Circuit</h3>
         <p>
-          A speaker and amplifier circuit was added to play music during competition, fulfilling the requirement for an electromechanical
-          indication of operation. This was a fun and low-cost implementation.
+          A speaker and amplifier circuit was used to play music during competition, fulfilling the requirement of having an electromechanical indication of operation.
+          This approach was chosen because it was fun, simple to implement, and low-cost—especially since one team member had previously built the circuit for another class.
         </p>
+        <img src="images/hardware-speaker.jpg" alt="Speaker and Amplifier Circuit" />
       </article>
       
       <!-- Hardware Design Rationale -->
       <article id="hardware-rationale">
         <h3>Hardware Design Rationale</h3>
         <p>
-          The selection of sensors and components provided redundancy and a robust foundation for performance while allowing flexibility for future upgrades.
+          Our initial game plan included most, if not all, of these sensors to allow for redundancy and multiple backup strategies.
+          We implemented all the sensors from the more complex plan during the building phase so we could later choose which ones to use during testing.
+          Ultimately, due to issues with some sensors and time constraints, we simplified the approach.
         </p>
       </article>
       
       <!-- Discussion -->
-      <article id="discussion">
+      <article id="hardware-discussion">
         <h3>Discussion</h3>
         <p>
-          The circuit design was straightforward but required careful handling of fragile wire connections and proper pin selection on the Arduino.
-          Hot gluing was used to secure connections, and PWM-specific pins were utilized to improve motor speed control.
+          The circuit design was relatively straightforward, though we faced challenges such as fragile wire connections and selecting the correct pins on the Arduino.
+          Wire connections were often compromised during battery connection/disconnection, so we used hot glue to secure them.
+          Additionally, the Arduino Uno’s dedicated PWM pins (490Hz or 980Hz) were used to achieve more accurate speed control,
+          after finding that software-based PWM on non-dedicated pins affected performance.
         </p>
       </article>
       
@@ -273,8 +273,10 @@
       <article id="hardware-conclusion">
         <h3>Hardware Conclusion</h3>
         <p>
-          Overall, the chosen hardware components provided a reliable and scalable foundation that met the performance benchmarks
-          while offering potential for more complex future implementations.
+          In conclusion, the hardware solutions chosen for this project provide a robust foundation for reliable performance and future scalability.
+          Each component—from the central processing unit to the specialized peripherals—was carefully evaluated based on functionality, compatibility,
+          and longer-term needs. By balancing cost-effectiveness with technical capability, the hardware architecture met current requirements while leaving room for future upgrades.
+          This selection not only achieved immediate performance benchmarks but also positions the project for more complex future implementations.
         </p>
       </article>
     </section>
