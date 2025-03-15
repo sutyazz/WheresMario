@@ -24,12 +24,13 @@
       <section id="introduction">
         <h2>Introduction</h2>
         <p>
-          This report details the software architecture and strategy implemented
-          for our "Bots & Pans" robot project. Our approach utilized a
-          master-slave Arduino setup with a custom communication protocol to
-          create a robust autonomous system capable of navigating the kitchen
-          environment, interacting with the pot, turning on the stove, and
-          dropping ingredients as required by the competition rules.
+          This lab report documents the comprehensive design and implementation of the Bots & Pans robot project, developed for the ME210 Winter 2025 course. The project seamlessly integrates a sophisticated software system with a robust hardware platform to create an autonomous robot capable of navigating a dynamic kitchen environment. Designed to fulfill rigorous competition requirements, the robot can locate a pot, activate the stove, and deliver ingredients with precision.
+
+On the software side, our approach centers on a master-slave Arduino configuration. The Sensor Arduino manages data acquisition from multiple sensors, oversees a finite state machine for decision making, and controls secondary functions such as the ball drop and ignitor arm. Meanwhile, the Motor Arduino is dedicated to executing precise four-wheel drivetrain commands. Communication between the two units is maintained via a custom serial protocol, ensuring reliable message exchange, error detection through checksum verification, and robust state transitions even under challenging conditions.
+
+Complementing the software, the hardware architecture was carefully designed to support the project's demanding requirements. Our system initially incorporated nine sensors—including ultrasonic and IR arrays—to provide the necessary environmental awareness, along with six DC motors and three motor drivers to deliver agile and responsive movement. Additionally, a speaker/amplifier circuit was implemented to offer an electromechanical indication of operation. Despite challenges such as sensor calibration and fragile wiring, the hardware choices were driven by a need for redundancy, scalability, and cost-effectiveness.
+
+This report is organized into detailed sections on Software Architecture and Hardware Architecture. The software section explains our distributed computing strategy, state machine design, sensor integration, and error-handling mechanisms, while the hardware section covers component selection, circuit design, and practical challenges encountered during implementation. Together, these systems not only achieved immediate performance benchmarks but also lay a solid foundation for future enhancements, such as advanced sensor fusion, dynamic path planning, and machine learning integration.
         </p>
         <img src="images/team final pic.JPG" alt="Bots & Pans Robot Project" />
         <p>
